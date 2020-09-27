@@ -1,24 +1,24 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
 import './Search.css';
 import { useDataLayerValue } from './DataLayer';
 import Row from './Row';
 import SearchRow from './SearchRow';
 import SearchLogo from './assets/magnifying-glass.svg';
+import {
+    setSearchResult
+} from './actions/search'
 
-
-function Search({spotify}) {
-    const [{search_result}, dispatch] = useDataLayerValue();
+function Search({spotify, setSearchResult, search:{search_result}}) {
+    // const [{search_result}, dispatch] = useDataLayerValue();
 
     const gensearchResult = (e) => {
         e.preventDefault();
         console.log(e.target.value);
 
         spotify.search(e.target.value, ["album","artist","playlist","track"]).then(res=>{
-            dispatch({
-                type:"SET_SEARCH_RESULT",
-                search_result:res
-            })
-        })
+            setSearchResult(res)
+;        })
     }
 
     console.log(search_result);
@@ -51,4 +51,8 @@ function Search({spotify}) {
     )
 }
 
-export default Search
+const mapStateToProps = state => ({
+    search: state.search
+})
+
+export default connect(mapStateToProps, {setSearchResult})(Search);

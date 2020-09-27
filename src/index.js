@@ -2,16 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import store from './store'
 import * as serviceWorker from './serviceWorker';
-import {DataLayer} from './DataLayer';
-import reducer, {initialState} from './reducer';
+import { Provider } from 'react-redux';
+// import {DataLayer} from './DataLayer';
+// import reducer, {initialState} from './reducer';
 // reducer - default export , initialState - normal export
 
 ReactDOM.render(
   <React.StrictMode>
-    <DataLayer initialState={initialState} reducer={reducer}>
-      <App/>
-    </DataLayer>
+    {/* <DataLayer initialState={initialState} reducer={reducer}> */}
+    <Provider store={store}>
+    <App/>
+    </Provider>
+    {/* </DataLayer> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

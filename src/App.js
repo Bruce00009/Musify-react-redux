@@ -1,20 +1,26 @@
 import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
 import './App.css';
 import Login from './Login';
 import { getTokenFromUrl } from './spotify';
+// import { useDataLayerValue } from './DataLayer';
 // makes it easy to interact with the spotify-web-api
 import SpotifyWebApi from "spotify-web-api-js";
 import Player from './Player';
-// Provides a way to grab the data from the data layer
-import {useDataLayerValue} from './DataLayer';
-// import "bootstrap/dist/css/bootstrap.css";
+// importing the action creators
+import {
+  setToken,
+  setSpotify,
+  setUser,
+  setPlaylists
+} from './actions/app';
 
 const spotify = new SpotifyWebApi();
 
-function App() {
+function App({setToken, setSpotify, setUser, setPlaylists, app:{token, user}}) {
 
   // pulling data from data layer , used to update or dispatch actions
-  const [{ user, token }, dispatch] = useDataLayerValue();
+  // const [{ user, token }, dispatch] = useDataLayerValue();
 
 
   useEffect(()=>{
@@ -26,56 +32,40 @@ function App() {
 
     if(_token){
 
-      dispatch({
-        type:'SET_TOKEN',
-        token:_token
-      })
+      // Set the token in the local storage
+      setToken(_token);
 
-      //SWA
+      // Set the spotify so that it can be used anywhere in the app
+      setSpotify(spotify);
+      console.log(spotify)
+
+      // SWA
       spotify.setAccessToken(_token);
 
       // returns a promise
       spotify.getMe().then(user=>{
         console.log("Person", user);
 
-        // pushing it in the data layer
-        dispatch({
-          type: 'SET_USER',
-          user: user
-        });
-
+        // adding it in the redux-store
+        setUser(user);
       });
 
       spotify.getUserPlaylists().then((playlists)=>{
-        // dispatching the user playlist in the data layer
-
-        dispatch({
-          type:"SET_PLAYLISTS",
-          playlists:playlists
-        })
+        // adding the user playlist in the redux store
+        setPlaylists(playlists);
       });
-
-      // spotify.getPlaylist("0vZcMiYx5QFnwB3Ppw55Eh").then(response=>{
-      //         console.log(response);
-      //           dispatch({
-      //             type:"SET_DISCOVER_WEEKLY",
-      //             discover_weekly:response
-      //           });
-      //         });
 
     }
 
-  }, [token, dispatch]);
+  }, [token]);
 
-  console.log("Person", user);
-  console.log("Token", token);
+  console.log(token)
 
   return (
     <div className="app">
       {
         // doing normally without context & reducer
         token ? (
-          // Player
           <Player spotify={spotify}/>
         ) : (
           // Login
@@ -87,4 +77,9 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  app:state.app
+})
+
+export default connect(mapStateToProps, {setToken, setSpotify, setUser, setPlaylists})(App);
+

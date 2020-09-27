@@ -18,6 +18,7 @@ function Body({spotify, match}) {
               type:"SET_DISCOVER_WEEKLY",
               discover_weekly:response
             });
+
           });
 
           //some data remains in the discover__weekly

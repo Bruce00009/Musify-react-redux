@@ -9,82 +9,84 @@ import VolumeDownIcon from "@material-ui/icons/VolumeDown";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
 import { Grid, Slider } from "@material-ui/core";
-import { useDataLayerValue } from './DataLayer';
+// import { useDataLayerValue } from './DataLayer';
 
 // WE CHANGE THE STATE OF THE SPOTIFY APP THROUGH OUR APP THEN ---->
 // WE GET THE STATE OF THE SPOTIFY APP & THEN FIX OUR APP STATE ACCORDINGLY
 
 function Footer({spotify}) {
     // getting the playing state, the item-song and token
-    const [{token, item, playing}, dispatch] = useDataLayerValue();
+    // const [{token, item, playing}, dispatch] = useDataLayerValue();
 
     //when the component will load dispatch an action aetting the *item & playing*
     useEffect(()=>{
-        spotify.getMyCurrentPlaybackState().then(res=>{
-            console.log("----Footer--------", res);
+        // spotify.getMyCurrentPlaybackState().then(res=>{
+        //     console.log("----Footer--------", res);
 
-            dispatch({
-                type:"SET_PLAYING",
-                playing:res.is_playing
-            });
+        //     dispatch({
+        //         type:"SET_PLAYING",
+        //         playing:res.is_playing
+        //     });
 
-            dispatch({
-                type:"SET_ITEM",
-                item:res.item
-            });
-        })
+        //     dispatch({
+        //         type:"SET_ITEM",
+        //         item:res.item
+        //     });
+        // })
     }, [spotify]);
 
     const handlePlayPause = () => {
         //dispatch an action setting *the state of the song(playing)*
-        if(playing){
-            spotify.pause();
-            dispatch({
-                type:"SET_PLAYING",
-                playing:false
-            });
-        }else{
-            spotify.play();
-            dispatch({
-                type:"SET_PLAYING",
-                playing:true
-            });
-        }
+        // if(playing){
+        //     spotify.pause();
+        //     dispatch({
+        //         type:"SET_PLAYING",
+        //         playing:false
+        //     });
+        // }else{
+        //     spotify.play();
+        //     dispatch({
+        //         type:"SET_PLAYING",
+        //         playing:true
+        //     });
+        // }
     }
 
     const skipNext = () => {
         // first move to the next song using spotify api
         //  get the state from spotify & dispatch an action setting the *item & playing*
-        spotify.skipToNext();
-        spotify.getMyCurrentPlaybackState().then(res=>{
-            dispatch({
-                type:"SET_ITEM",
-                item:res.item
-            });
 
-            dispatch({
-                type:"SET_PLAYING",
-                playing:res.is_playing
-            })
-        })
+        // spotify.skipToNext();
+        // spotify.getMyCurrentPlaybackState().then(res=>{
+        //     dispatch({
+        //         type:"SET_ITEM",
+        //         item:res.item
+        //     });
+
+        //     dispatch({
+        //         type:"SET_PLAYING",
+        //         playing:res.is_playing
+        //     })
+        // })
 
     }
 
     const skipPrevious = () => {
         // first move to the previous song
         //dispatch an action setting the *item & playing*
-        spotify.skipToPrevious();
-        spotify.getMyCurrentPlaybackState().then(res=>{
-            dispatch({
-                type:"SET_ITEM",
-                item:res.item
-            });
 
-            dispatch({
-                type:"SET_PLAYING",
-                playing:res.is_playing
-            });
-        });
+        // spotify.skipToPrevious();
+        // spotify.getMyCurrentPlaybackState().then(res=>{
+        //     dispatch({
+        //         type:"SET_ITEM",
+        //         item:res.item
+        //     });
+
+        //     dispatch({
+        //         type:"SET_PLAYING",
+        //         playing:res.is_playing
+        //     });
+        // });
     }
 
 
@@ -107,7 +109,7 @@ function Footer({spotify}) {
                 {/* Player Controls */}
                 <ShuffleIcon className="footer__green" />
                 <SkipPreviousIcon onClick={skipPrevious} className="footer__icon" />
-                {
+                {/* {
                     playing ? (
                         <PlayCircleOutlineIcon
                             onClick={handlePlayPause}
@@ -121,7 +123,7 @@ function Footer({spotify}) {
                             className="footer__icon"
                         />
                     )
-                }
+                } */}
                 
                 <SkipNextIcon onClick={skipNext} className="footer__icon" />
                 <RepeatIcon className="footer__green" />

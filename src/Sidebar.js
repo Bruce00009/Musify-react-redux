@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
 import './Sidebar.css';
 import SidebarOption from './SidebarOption';
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
-import {useDataLayerValue} from './DataLayer';
 import {Link} from 'react-router-dom';
 import { Avatar } from "@material-ui/core";
 
 
-function Sidebar() {
+function Sidebar({app:{user, playlists}}) {
     
     // pulling data from the data layer
-    const [{user, playlists}, dispatch] = useDataLayerValue();
+    // const [{user, playlists}, dispatch] = useDataLayerValue();
 
     return (
         <div className="sidebar">
@@ -49,4 +49,8 @@ function Sidebar() {
     )
 }
 
-export default Sidebar
+const mapStateToProps = state => ({
+    app:state.app
+})
+
+export default connect(mapStateToProps)(Sidebar)

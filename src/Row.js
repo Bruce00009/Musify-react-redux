@@ -1,18 +1,19 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
 import './Row.css';
-import { useDataLayerValue } from './DataLayer';
+// importing the action creators
+import {
+    setCatPlayId
+} from './actions/home'
 
 
-function Row({items, title}) {
-    const [{cat_playid}, dispatch] = useDataLayerValue();
+function Row({items, title, setCatPlayId}) {
+    // const [{cat_playid}, dispatch] = useDataLayerValue();
 
 
     const genCatPlaylist = (e) => {
         // console.log(e.target.getAttribute("posterid"));
-        dispatch({
-            type:"CAT_PLAYLIST_ID",
-            cat_playid:e.target.getAttribute("posterid")
-        });
+        setCatPlayId(e.target.getAttribute("posterid"));
 
     }
 
@@ -80,4 +81,4 @@ function Row({items, title}) {
     )
 }
 
-export default Row
+export default connect(null, {setCatPlayId})(Row);
